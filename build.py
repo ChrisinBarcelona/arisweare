@@ -135,7 +135,7 @@ def footer() -> str:
 def page(*, title: str, description: str, body: str, path: str, image: str | None = None,
          lang: str = "en", extra_head: str = "", active: str = "", og_type: str = "website") -> str:
     og_image = abs_url(image or "assets/img/og-image.jpg")
-    full_title = f"{title} | ARIS" if title != "ARIS" else "ARIS — Aris, we are"
+    full_title = f"{title} | ARIS" if title != "ARIS" else "ARIS — Activewear"
     return f"""<!doctype html>
 <html lang="{lang}">
 <head>
@@ -247,13 +247,10 @@ def build_home() -> str:
     {editorial('aris-prioridad2-color-9-scaled', 'Five women in black ARIS activewear posing together', lazy=False, priority=True)}
     {editorial('aris-prioridad2-color-6-1-scaled', 'A woman meditating in a black ARIS jumpsuit while hands offer her dice', lazy=False)}
   </div>
-  <div class="hero-copy">
-    <h1>Aris, we are</h1>
-    <p>Be whatever you want to be</p>
-    <div class="hero-actions">
-      <a class="btn btn-light" href="#shop">Shop now</a>
-      <a class="btn btn-light" href="#fabric">The fabric</a>
-    </div>
+  <h1 class="sr-only">ARIS — activewear</h1>
+  <div class="hero-actions">
+    <a class="btn btn-solid" href="#shop">Shop now</a>
+    <a class="btn btn-solid" href="#fabric">The fabric</a>
   </div>
 </section>
 
