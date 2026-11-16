@@ -1,0 +1,98 @@
+{
+  "shop": {
+    "name": "ARIS",
+    "tagline": "Aris, we are. Be whatever you want to be.",
+    "url": "https://arisweare.com",
+    "whatsapp": "34687305150",
+    "whatsapp_display": "+34 687 305 150",
+    "email": "hi@arisweare.com",
+    "currency": "EUR",
+    "announcement": "Order directly on WhatsApp — we reply personally",
+    "material": "85% recycled polyester / 15% elastane",
+    "care": "Machine wash at 40°C",
+    "features": [
+      "Made from recycled plastic bottles",
+      "UPF 50+ sun protection",
+      "Soft, flexible fabric that moves with you"
+    ]
+  },
+  "categories": [
+    { "slug": "tops", "name": "Tops" },
+    { "slug": "bottoms", "name": "Bottoms" },
+    { "slug": "body-suits", "name": "Body Suits" }
+  ],
+  "products": [
+    {
+      "slug": "alfil",
+      "name": "Alfil",
+      "category": "tops",
+      "price": 24.95,
+      "compare_at": null,
+      "colour": "Black",
+      "sizes": ["S", "M", "L"],
+      "in_stock": true,
+      "description": "Elevate your daily routine with the Alfil t-shirt. Its diagonal back design promotes airflow and full freedom of movement, taking you seamlessly from the gym to the city.",
+      "images": ["alfil-1.jpg", "alfil-2.webp", "alfil-3.webp", "alfil-4.jpg"]
+    },
+    {
+      "slug": "tetris",
+      "name": "Tetris",
+      "category": "bottoms",
+      "price": 34.95,
+      "compare_at": 69.90,
+      "colour": "Black",
+      "sizes": ["S", "M", "L"],
+      "in_stock": true,
+      "description": "Master the court and the city with the Tetris skort. Its youthful, dynamic design is perfect for tennis, padel or running, with a phone pocket that lets you move without limits.",
+      "images": ["tetris-1.jpg", "tetris-2.webp", "tetris-3.jpg"]
+    },
+    {
+      "slug": "domino",
+      "name": "Dominó",
+      "category": "body-suits",
+      "price": 64.95,
+      "compare_at": null,
+      "colour": "Black",
+      "sizes": ["S", "M", "L"],
+      "in_stock": true,
+      "description": "The versatile bodysuit that adapts to every stage of your life. Designed with exceptional softness to highlight your natural beauty, its flexible, comfortable fabric makes it the perfect choice even during pregnancy.",
+      "images": ["domino-1.jpg", "domino-2.jpg", "domino-3.jpg", "domino-4.jpg", "domino-5.jpg"]
+    },
+    {
+      "slug": "poker",
+      "name": "Póker",
+      "category": "bottoms",
+      "price": 42.95,
+      "compare_at": null,
+      "colour": "Black",
+      "sizes": ["S", "M", "L"],
+      "in_stock": true,
+      "description": "The piece that redefines office-to-gym style. With a sophisticated and comfortable design, it is ideal for a stylish day at the office or a workout with character, offering unique versatility without losing elegance.",
+      "images": ["poker-1.jpg", "poker-2.jpg", "poker-3.jpg", "poker-4.jpg"]
+    },
+    {
+      "slug": "diamante",
+      "name": "Diamante",
+      "category": "tops",
+      "price": 49.95,
+      "compare_at": null,
+      "colour": "Black",
+      "sizes": ["S", "M", "L"],
+      "in_stock": true,
+      "description": "The ultimate piece for those who embrace a futuristic, sporty edge. Its design stands out with an exclusive butterfly detail that elevates any look, blending technical fabric with a bold, functional aesthetic.",
+      "images": ["diamante-1.jpg", "diamante-2.jpg", "diamante-3.jpg", "diamante-4.jpg"]
+    },
+    {
+      "slug": "dice",
+      "name": "Dice",
+      "category": "tops",
+      "price": 44.95,
+      "compare_at": null,
+      "colour": "Black",
+      "sizes": ["S", "M", "L"],
+      "in_stock": true,
+      "description": "May your luck be to wear pieces that combine elegance and versatility for a day full of opportunities, with a bold and functional aesthetic.",
+      "images": ["dice-1.jpg", "dice-2.jpg", "dice-4.jpg", "dice-5.jpg"]
+    }
+  ]
+}
