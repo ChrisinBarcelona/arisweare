@@ -37,8 +37,13 @@ def url(path: str) -> str:
     return f"{BASE}/{path.lstrip('/')}"
 
 
+# Full site address used in links people share (WhatsApp orders, previews, sitemap).
+# GitHub Actions passes the live address; it falls back to the shop's own domain.
+SITE_URL = (os.environ.get("SITE_URL") or SHOP["url"]).rstrip("/")
+
+
 def abs_url(path: str) -> str:
-    return SHOP["url"].rstrip("/") + "/" + path.lstrip("/")
+    return SITE_URL + "/" + path.lstrip("/")
 
 
 def price(value: float) -> str:

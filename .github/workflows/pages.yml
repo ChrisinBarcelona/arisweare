@@ -28,6 +28,7 @@ jobs:
         run: python3 build.py
         env:
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
