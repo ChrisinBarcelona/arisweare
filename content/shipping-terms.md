@@ -3,6 +3,7 @@ title: Shipping & Returns
 lang: en
 alt: terminos-y-condiciones
 alt_label: Leer en español
+description: ARIS shipping and returns: costs confirmed before you pay, bank transfer or card, and returns within 9 days of delivery.
 ---
 These Shipping Terms and Conditions ("Terms and Conditions") apply to all orders placed with our store ARIS ("the Store").
 

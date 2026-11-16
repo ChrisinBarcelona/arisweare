@@ -3,6 +3,7 @@ title: Envíos y Devoluciones
 lang: es
 alt: shipping-terms
 alt_label: Read in English
+description: Envíos y devoluciones de ARIS: costes confirmados antes de pagar, transferencia o tarjeta, y devoluciones en 9 días desde la entrega.
 ---
 Estos Términos y Condiciones de Envío ("Términos y Condiciones") se aplican a todos los pedidos realizados en nuestra tienda ARIS ("la Tienda").
 

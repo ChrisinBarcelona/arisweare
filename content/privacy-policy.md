@@ -1,6 +1,7 @@
 ---
 title: Privacy Policy
 lang: en
+description: How ARIS handles your data: no cookies or tracking on this site; order details are used only to deliver your order.
 ---
 This website is run by ARIS (arisweare.com). We keep things simple: the site itself does not use cookies, analytics or advertising trackers, and it has no customer accounts.
 

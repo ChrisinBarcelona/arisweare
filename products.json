@@ -13,7 +13,9 @@
       "Made from recycled plastic bottles",
       "UPF 50+ sun protection",
       "Soft, flexible fabric that moves with you"
-    ]
+    ],
+    "seo_title": "ARIS — Black activewear in recycled fabric, UPF 50+",
+    "seo_description": "ARIS makes black activewear from recycled plastic bottles, with UPF 50+ sun protection — from gym to city. Order directly on WhatsApp."
   },
   "categories": [
     {
@@ -49,7 +51,10 @@
         "alfil-2.webp",
         "alfil-3.webp",
         "alfil-4.jpg"
-      ]
+      ],
+      "sku": "awr-006",
+      "seo_title": "Alfil — black top with crossed back",
+      "seo_description": "Alfil: a black ARIS top with a diagonal crossed back for airflow and free movement. Recycled fabric, UPF 50+. Sizes S–L. Order on WhatsApp."
     },
     {
       "slug": "tetris",
@@ -69,7 +74,10 @@
         "tetris-1.jpg",
         "tetris-2.webp",
         "tetris-3.jpg"
-      ]
+      ],
+      "sku": "awr-005",
+      "seo_title": "Tetris — black skort with phone pocket",
+      "seo_description": "Tetris: a black ARIS skort for tennis, padel and running, with a phone pocket. Recycled fabric, UPF 50+. Sizes S–L. Now 34,95 €."
     },
     {
       "slug": "domino",
@@ -91,7 +99,10 @@
         "domino-3.jpg",
         "domino-4.jpg",
         "domino-5.jpg"
-      ]
+      ],
+      "sku": "awr-004",
+      "seo_title": "Dominó — soft black bodysuit",
+      "seo_description": "Dominó: a soft, flexible black ARIS bodysuit that adapts to every stage of life, pregnancy included. Recycled fabric, UPF 50+. Sizes S–L."
     },
     {
       "slug": "poker",
@@ -112,7 +123,10 @@
         "poker-2.jpg",
         "poker-3.jpg",
         "poker-4.jpg"
-      ]
+      ],
+      "sku": "awr-001",
+      "seo_title": "Póker — black office-to-gym piece",
+      "seo_description": "Póker: ARIS's sophisticated black piece that goes from the office to a workout. Recycled fabric, UPF 50+. Sizes S–L. Order on WhatsApp."
     },
     {
       "slug": "diamante",
@@ -133,7 +147,10 @@
         "diamante-2.jpg",
         "diamante-3.jpg",
         "diamante-4.jpg"
-      ]
+      ],
+      "sku": "awr-003",
+      "seo_title": "Diamante — black top with butterfly cut-outs",
+      "seo_description": "Diamante: a black ARIS long-sleeve top with an exclusive butterfly cut-out detail. Recycled fabric, UPF 50+. Sizes S–L. Order on WhatsApp."
     },
     {
       "slug": "dice",
@@ -154,7 +171,10 @@
         "dice-2.jpg",
         "dice-4.jpg",
         "dice-5.jpg"
-      ]
+      ],
+      "sku": "awr-002",
+      "seo_title": "Dice — black sports top",
+      "seo_description": "Dice: an elegant, versatile black ARIS sports top with a bold, functional look. Recycled fabric, UPF 50+. Sizes S–L. Order on WhatsApp."
     }
   ],
   "experiences": [
@@ -166,7 +186,8 @@
       "max_spots": 6,
       "available": true,
       "description": "Join ARIS for a paddle surf session at sunset. Book your spot on WhatsApp and we'll send you all the details.",
-      "image": null
+      "image": null,
+      "seo_description": "Sunset paddle surf session with ARIS on 20/6. 25 € per spot — book your place on WhatsApp and we'll send you the details."
     }
   ]
 }

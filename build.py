@@ -9,6 +9,7 @@ No dependencies beyond the Python 3 standard library.
 """
 from __future__ import annotations
 
+import datetime
 import hashlib
 import html
 import json
@@ -132,28 +133,54 @@ def footer() -> str:
 </footer>"""
 
 
+LOCALES = {"en": "en_GB", "es": "es_ES"}
+
+
+def jsonld(*objs: dict) -> str:
+    return "".join(f'<script type="application/ld+json">{json.dumps(o, ensure_ascii=False)}</script>\n' for o in objs)
+
+
+def breadcrumbs(*items: tuple[str, str]) -> dict:
+    return {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": i + 1, "name": name, "item": abs_url(path)} for i, (name, path) in enumerate(items)]}
+
+
 def page(*, title: str, description: str, body: str, path: str, image: str | None = None,
-         lang: str = "en", extra_head: str = "", active: str = "", og_type: str = "website") -> str:
+         image_alt: str = "", lang: str = "en", extra_head: str = "", active: str = "",
+         og_type: str = "website", alternates: dict[str, str] | None = None, noindex: bool = False) -> str:
+    """title is the full <title>; description should be 50–160 characters."""
     og_image = abs_url(image or "assets/img/og-image.jpg")
-    full_title = f"{title} | ARIS" if title != "ARIS" else "ARIS — Activewear"
+    if not image:
+        image_alt = image_alt or "Five women wearing black ARIS activewear"
+        dims = '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
+    else:
+        dims = ""
+    links = ""
+    if alternates:
+        links = "".join(f'<link rel="alternate" hreflang="{code}" href="{abs_url(p)}">\n' for code, p in alternates.items())
+        links += f'<link rel="alternate" hreflang="x-default" href="{abs_url(alternates.get("en", path))}">\n'
+    robots = '<meta name="robots" content="noindex">\n' if noindex else ""
     return f"""<!doctype html>
 <html lang="{lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{e(full_title)}</title>
+<title>{e(title)}</title>
 <meta name="description" content="{e(description)}">
-<link rel="canonical" href="{abs_url(path)}">
-<meta property="og:type" content="{og_type}">
+{robots}<link rel="canonical" href="{abs_url(path)}">
+{links}<meta property="og:type" content="{og_type}">
 <meta property="og:site_name" content="ARIS">
-<meta property="og:title" content="{e(full_title)}">
+<meta property="og:locale" content="{LOCALES.get(lang, 'en_GB')}">
+<meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(description)}">
-<meta property="og:image" content="{og_image}">
 <meta property="og:url" content="{abs_url(path)}">
+<meta property="og:image" content="{og_image}">
+{dims}<meta property="og:image:alt" content="{e(image_alt)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#000000">
 <link rel="icon" href="{url('assets/img/favicon.png')}">
 <link rel="apple-touch-icon" href="{url('assets/img/apple-touch-icon.png')}">
+<link rel="manifest" href="{url('site.webmanifest')}">
 <link rel="stylesheet" href="{asset('assets/style.css')}">
 {extra_head}
 </head>
@@ -285,8 +312,22 @@ def build_home() -> str:
     <li><span aria-hidden="true">03</span>We confirm availability, shipping and payment in the chat</li>
   </ol>
 </section>"""
-    return page(title="ARIS", description="ARIS activewear in black: recycled fabric, UPF 50+ sun protection. Order directly on WhatsApp.",
-                body=body, path="")
+    org = {
+        "@context": "https://schema.org", "@type": "OnlineStore", "@id": abs_url("#store"), "name": "ARIS",
+        "url": abs_url(""), "logo": abs_url("assets/img/logo.png"), "image": abs_url("assets/img/og-image.jpg"),
+        "description": SHOP["seo_description"], "email": SHOP["email"],
+        "telephone": "+" + SHOP["whatsapp"],
+        "contactPoint": {"@type": "ContactPoint", "contactType": "customer service", "telephone": "+" + SHOP["whatsapp"],
+                         "email": SHOP["email"], "availableLanguage": ["en", "es"]},
+        "currenciesAccepted": SHOP["currency"], "paymentAccepted": "Bank transfer, Credit card, Debit card",
+    }
+    site = {"@context": "https://schema.org", "@type": "WebSite", "name": "ARIS", "url": abs_url(""),
+            "publisher": {"@id": abs_url("#store")}, "inLanguage": "en"}
+    items = {"@context": "https://schema.org", "@type": "ItemList", "name": "The ARIS collection",
+             "itemListElement": [{"@type": "ListItem", "position": i + 1, "url": abs_url(f"product/{p['slug']}/"), "name": p["name"]}
+                                 for i, p in enumerate(PRODUCTS)]}
+    return page(title=SHOP["seo_title"], description=SHOP["seo_description"], body=body, path="",
+                extra_head=jsonld(org, site, items))
 
 
 def order_form(*, message: str, choice_name: str, choice_label: str, choices: list[str],
@@ -340,13 +381,21 @@ def build_product(p: dict) -> str:
     same_cat = [o for o in others if o["category"] == p["category"]]
     related = "".join(product_card(o) for o in (same_cat + [o for o in others if o not in same_cat])[:3])
     ld = {
-        "@context": "https://schema.org", "@type": "Product", "name": p["name"],
-        "description": p["description"], "image": [abs_url(f"assets/img/products/{x}") for x in p["images"]],
+        "@context": "https://schema.org", "@type": "Product", "name": p["name"], "url": page_url,
+        "sku": p.get("sku"), "description": p["description"], "category": cat,
+        "image": [abs_url(f"assets/img/products/{x}") for x in p["images"]],
         "brand": {"@type": "Brand", "name": "ARIS"}, "color": p["colour"], "material": SHOP["material"],
+        "size": ", ".join(p["sizes"]),
         "offers": {"@type": "Offer", "priceCurrency": SHOP["currency"], "price": f"{p['price']:.2f}",
+                   "itemCondition": "https://schema.org/NewCondition",
                    "availability": "https://schema.org/OutOfStock" if sold_out else "https://schema.org/InStock",
-                   "url": page_url},
+                   "url": page_url, "seller": {"@type": "Organization", "name": "ARIS"}},
     }
+    ld = {k: v for k, v in ld.items() if v}
+    if sale:
+        ld["offers"]["priceSpecification"] = {"@type": "UnitPriceSpecification", "priceType": "https://schema.org/StrikethroughPrice",
+                                              "price": f"{sale:.2f}", "priceCurrency": SHOP["currency"]}
+    crumbs = breadcrumbs(("ARIS", ""), (cat, f"?c={p['category']}"), (p["name"], f"product/{p['slug']}/"))
     body = f"""
 <nav class="crumbs" aria-label="Breadcrumb"><a href="{url('')}">ARIS</a> <span aria-hidden="true">/</span> <a href="{url(f'?c={p["category"]}#shop')}">{e(cat)}</a> <span aria-hidden="true">/</span> <span aria-current="page">{e(p['name'])}</span></nav>
 <article class="pd">
@@ -378,9 +427,15 @@ def build_product(p: dict) -> str:
   <h2 id="related-title">You may also like</h2>
   <ul class="grid">{related}</ul>
 </section>"""
-    head = f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>'
-    return page(title=p["name"], description=f"{p['name']} — {p['description'][:140]}", body=body,
-                path=f"product/{p['slug']}/", image=f"assets/img/products/{p['images'][0]}", extra_head=head,
+    head = jsonld(ld, crumbs) + (
+        f'<meta property="product:price:amount" content="{p["price"]:.2f}">\n'
+        f'<meta property="product:price:currency" content="{SHOP["currency"]}">\n'
+        f'<meta property="product:availability" content="{"out of stock" if sold_out else "in stock"}">\n'
+        f'<meta property="product:brand" content="ARIS">')
+    return page(title=f"{p.get('seo_title', p['name'])} | ARIS",
+                description=p.get("seo_description") or p["description"][:155],
+                body=body, path=f"product/{p['slug']}/", image=f"assets/img/products/{p['images'][0]}",
+                image_alt=f"{p['name']} by ARIS in {p['colour'].lower()}", extra_head=head,
                 active=p["category"], og_type="product")
 
 
@@ -416,8 +471,11 @@ def build_experience(x: dict) -> str:
     </div>
   </div>
 </article>"""
-    return page(title=f"{x['name']} {x['date']}", description=f"{x['name']} with ARIS — {x['date']}. Book on WhatsApp.",
-                body=body, path=f"experience/{x['slug']}/", active="experiences")
+    # No Event schema yet: Google requires a full date, time and location, which we don't have.
+    crumbs = breadcrumbs(("ARIS", ""), ("Experiences", "#experiences"), (x["name"], f"experience/{x['slug']}/"))
+    return page(title=f"{x['name']} {x['date']} — book on WhatsApp | ARIS",
+                description=x.get("seo_description") or x["description"][:155],
+                body=body, path=f"experience/{x['slug']}/", active="experiences", extra_head=jsonld(crumbs))
 
 
 def md_to_html(text: str) -> str:
@@ -459,8 +517,13 @@ def build_content(path: Path) -> tuple[str, str]:
         alt = f'<p class="lang-switch"><a href="{url(meta["alt"] + "/")}" hreflang="{alt_lang}" lang="{alt_lang}">{e(meta["alt_label"])}</a></p>'
     body = f"""<article class="legal"><h1>{e(meta['title'])}</h1>{alt}{md_to_html(text)}</article>"""
     slug = path.stem
-    return slug, page(title=meta["title"], description=f"ARIS — {meta['title']}", body=body,
-                      path=f"{slug}/", lang=meta.get("lang", "en"))
+    lang = meta.get("lang", "en")
+    alternates = None
+    if "alt" in meta:
+        other = "es" if lang == "en" else "en"
+        alternates = {lang: f"{slug}/", other: f"{meta['alt']}/"}
+    return slug, page(title=f"{meta['title']} | ARIS", description=meta.get("description", f"ARIS — {meta['title']}"),
+                      body=body, path=f"{slug}/", lang=lang, alternates=alternates)
 
 
 # --------------------------------------------------------------------------- write
@@ -489,11 +552,18 @@ def main() -> None:
         write(f"{slug}/index.html", out)
         urls.append(f"{slug}/")
 
-    write("404.html", page(title="Page not found", description="Page not found", path="404.html", body=f"""
+    write("404.html", page(title="Page not found | ARIS", description="This page doesn't exist. Browse the ARIS collection instead.",
+                           path="404.html", noindex=True, body=f"""
 <section class="notfound"><h1>Page not found</h1><p>This page doesn't exist — the collection does.</p>
 <a class="btn" href="{url('')}">Back to the shop</a></section>"""))
+    today = datetime.date.today().isoformat()
     write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-          + "".join(f"  <url><loc>{abs_url(u)}</loc></url>\n" for u in urls) + "</urlset>\n")
+          + "".join(f"  <url><loc>{abs_url(u)}</loc><lastmod>{today}</lastmod></url>\n" for u in urls) + "</urlset>\n")
+    write("site.webmanifest", json.dumps({
+        "name": "ARIS", "short_name": "ARIS", "start_url": url(""), "display": "browser",
+        "background_color": "#ffffff", "theme_color": "#000000",
+        "icons": [{"src": url("assets/img/apple-touch-icon.png"), "sizes": "180x180", "type": "image/png"},
+                  {"src": url("assets/img/favicon.png"), "sizes": "512x512", "type": "image/png"}]}, indent=2))
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {abs_url('sitemap.xml')}\n")
     write(".nojekyll", "")
     if (ROOT / "CNAME").exists():
