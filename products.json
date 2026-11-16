@@ -7,7 +7,7 @@
     "whatsapp_display": "+34 687 305 150",
     "email": "hi@arisweare.com",
     "currency": "EUR",
-    "announcement": "Order directly on WhatsApp — we reply personally",
+    "announcement": "Order directly on WhatsApp",
     "material": "85% recycled polyester / 15% elastane",
     "care": "Machine wash at 40°C",
     "features": [
@@ -93,6 +93,18 @@
       "in_stock": true,
       "description": "May your luck be to wear pieces that combine elegance and versatility for a day full of opportunities, with a bold and functional aesthetic.",
       "images": ["dice-1.jpg", "dice-2.jpg", "dice-4.jpg", "dice-5.jpg"]
+    }
+  ],
+  "experiences": [
+    {
+      "slug": "sunset-paddle-surf",
+      "name": "Sunset Paddle Surf",
+      "date": "20/6",
+      "price": 25.00,
+      "max_spots": 6,
+      "available": true,
+      "description": "Join ARIS for a paddle surf session at sunset. Book your spot on WhatsApp and we'll send you all the details.",
+      "image": null
     }
   ]
 }
